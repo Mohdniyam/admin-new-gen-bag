@@ -77,6 +77,7 @@
 }
 
 @theme inline {
+  --font-display: "Open Sans", sans-serif;
   --font-sans: "Geist", "Geist Fallback";
   --font-mono: "Geist Mono", "Geist Mono Fallback";
   --color-background: var(--background);
@@ -125,3 +126,4 @@
     @apply bg-background text-foreground;
   }
 }
+

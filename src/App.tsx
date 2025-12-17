@@ -1,10 +1,12 @@
-import AdminPage from "@/adminPage/adminPage";
+// import AdminPage from "@/adminPage/adminPage";
+import SignUp from "./screens/SignUp";
 export function App() {
-return (
+  return (
     <div>
-        <AdminPage />
+      {/* <AdminPage /> */}
+      <SignUp />
     </div>
-);
+  );
 }
 
 export default App;
