@@ -3,6 +3,8 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import AdminPage from "@/adminPage/adminPage";
 import SignUp from "./screens/SignUp";
 import SignIn from "./screens/SignIn";
+import { ToastContainer } from "react-toastify";
+import Profile from "./screens/Profile";
 export function App() {
   return (
     <div>
@@ -23,8 +25,17 @@ export function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
+      <ToastContainer autoClose={1000} />
     </div>
   );
 }

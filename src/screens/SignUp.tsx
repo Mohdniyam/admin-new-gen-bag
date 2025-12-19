@@ -2,6 +2,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { FiLogIn } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // ------- Handle Sign Up! --------
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -25,16 +27,19 @@ const SignUp = () => {
     localStorage.setItem("user", JSON.stringify(userData));
 
     navigate("/login");
+    toast.success("successfully signed up!", {
+      position: "top-center",
+    });
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-100">
       <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-sm h-150 overflow-auto">
-        <h2 className="flex justify-center font-display text-3xl font-bold text-foreground mb-2">
+        <h2 className="flex justify-center text-3xl font-bold text-foreground mb-2">
           Welcome
         </h2>
 
-        <p className="flex justify-center font-display text-md text-gray-600 mb-8">
+        <p className="flex justify-center text-md text-gray-600 mb-8">
           Please signup to continue
         </p>
 
@@ -42,7 +47,7 @@ const SignUp = () => {
           <div className="bg-[#70707040] rounded-lg flex">
             <Link
               to="/login"
-              className={`px-10 py-2 font-display rounded-md transition-colors duration-300 ease-in-out cursor-pointer ${
+              className={`px-10 py-2 rounded-md transition-colors duration-300 ease-in-out cursor-pointer ${
                 isLogin ? "bg-blue-600 text-white" : " text-blue-600"
               }`}
             >
@@ -50,7 +55,7 @@ const SignUp = () => {
             </Link>
             <Link
               to="/signup"
-              className={`px-10 py-2 font-display rounded-md transition-colors duration-300 ease-in-out cursor-pointer ${
+              className={`px-10 py-2 rounded-md transition-colors duration-300 ease-in-out cursor-pointer ${
                 !isLogin ? "bg-blue-600 text-white" : " text-blue-600"
               }`}
             >
@@ -60,38 +65,38 @@ const SignUp = () => {
         </div>
 
         <form className="grid" onSubmit={handleSubmit}>
-          <label className="text-blue-600 font-display my-2">Username</label>
+          <label className="text-blue-600 my-2">Username</label>
           <input
             type="text"
-            className="border font-display px-2 py-2 rounded-md"
+            className="border px-2 py-2 rounded-md"
             onChange={(e) => setName(e.target.value)}
           />
 
-          <label className="text-blue-600 font-display my-2">Role</label>
+          <label className="text-blue-600 my-2">Role</label>
           <select
-            className="border font-display p-2 rounded-md"
+            className="border p-2 rounded-md"
             onChange={(e) => setSelectedRole(e.target.value)}
           >
             <option value="">Select your role</option>
             <option value="supplier">Supplier</option>
           </select>
 
-          <label className="text-blue-600 font-display my-2">Email</label>
+          <label className="text-blue-600 my-2">Email</label>
           <input
             type="email"
-            className="border font-display p-2 rounded-md"
+            className="border p-2 rounded-md"
             onChange={(e) => setEmail(e.target.value)}
           />
 
-          <label className="text-blue-600 font-display my-2">Password</label>
+          <label className="text-blue-600 my-2">Password</label>
           <input
             type="password"
-            className="border font-display p-2 rounded-md"
+            className="border p-2 rounded-md"
             onChange={(e) => setPassword(e.target.value)}
           />
 
           <button
-            className="flex items-center justify-center gap-2 px-10 py-2 mt-6 font-display cursor-pointer rounded-md bg-blue-600 text-white"
+            className="flex items-center justify-center gap-2 px-10 py-2 mt-6 cursor-pointer rounded-md bg-blue-600 text-white"
             type="submit"
           >
             Sign Up <FiLogIn />
