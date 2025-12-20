@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import PublicRoute from "./routes/PublicRoute";
 import AdminPage from "@/adminPage/adminPage";
 import SignUp from "./screens/SignUp";
 import SignIn from "./screens/SignIn";
@@ -10,11 +11,33 @@ export function App() {
     <div>
       <BrowserRouter>
         <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<SignIn />} />
+          {/* Public Routes (BLOCK if logged in) */}
+          <Route
+            path="/"
+            element={
+              <PublicRoute>
+                <SignIn />
+              </PublicRoute>
+            }
+          />
 
-          <Route path="/login" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <SignIn />
+              </PublicRoute>
+            }
+          />
+
+          <Route
+            path="/signup"
+            element={
+              <PublicRoute>
+                <SignUp />
+              </PublicRoute>
+            }
+          />
 
           {/* Private Routes */}
           <Route
@@ -25,6 +48,7 @@ export function App() {
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/profile"
             element={
@@ -35,6 +59,7 @@ export function App() {
           />
         </Routes>
       </BrowserRouter>
+
       <ToastContainer autoClose={1000} />
     </div>
   );

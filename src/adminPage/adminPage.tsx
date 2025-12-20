@@ -13,10 +13,11 @@ export default function AdminPage() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const handleLogout = () => {
-    localStorage.removeItem("loggedInUser");
-    navigate("/login");
-    toast.success("successfully logged out!", { position: "top-center" });
+    localStorage.removeItem("user");
+    navigate("/login", { replace: true });
+    toast.success("Successfully logged out!", { position: "top-center" });
   };
+
   return (
     <div className="min-h-screen bg-[#fbfaf9]">
       {/* Header */}

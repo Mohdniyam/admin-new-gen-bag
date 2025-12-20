@@ -23,11 +23,13 @@ const SignUp = () => {
       return alert("All fields are required");
     }
 
-    const userData = { name, role: selectedRole, email, password };
-    localStorage.setItem("user", JSON.stringify(userData));
+    const registeredUser = { name, role: selectedRole, email, password };
 
-    navigate("/login");
-    toast.success("successfully signed up!", {
+    // Save only registered user (NOT logged in)
+    localStorage.setItem("registeredUser", JSON.stringify(registeredUser));
+
+    navigate("/login", { replace: true });
+    toast.success("Signup successful! Please login.", {
       position: "top-center",
     });
   };

@@ -19,27 +19,37 @@ const SignIn = () => {
     password: "",
   });
 
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-
   const handleSignIn = () => {
-    localStorage.setItem("token", "dummy_token");
+    const registeredUser = localStorage.getItem("registeredUser");
 
-    navigate("/admin");
-    toast.success("Login successfully!", {
-      position: "top-center",
-    });
+    if (!registeredUser) {
+      toast.error("Please signup first", { position: "top-center" });
+      return;
+    }
+
+    const savedUser = JSON.parse(registeredUser);
+
+    if (
+      savedUser.email !== details.email ||
+      savedUser.password !== details.password
+    ) {
+      toast.error("Invalid credentials", { position: "top-center" });
+      return;
+    }
+
+    localStorage.setItem("user", JSON.stringify(savedUser));
+
+    navigate("/admin", { replace: true });
+    toast.success("Login successfully!", { position: "top-center" });
   };
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      const user = JSON.parse(storedUser);
+    const registeredUser = localStorage.getItem("registeredUser");
+    if (registeredUser) {
+      const user = JSON.parse(registeredUser);
       const email = user.email;
       const password = user.password;
       setDetails({ ...details, email, password });
-      // setEmail(email);
-      // setPassword(password);
     }
   }, []);
 
