@@ -18,12 +18,12 @@ export default function AdminPage() {
     toast.success("successfully logged out!", { position: "top-center" });
   };
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#fbfaf9]">
       {/* Header */}
       <header className="flex border-b border-border bg-card h-22 ">
         <div className="container mx-auto px-4 py-4 flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
-            <Package className="h-5 w-5 text-primary-foreground" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100">
+            <Package className="h-7 w-7 text-blue-600" />
           </div>
           <div>
             <h1 className="text-xl font-semibold text-foreground">
@@ -72,20 +72,13 @@ export default function AdminPage() {
       )}
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
-        <div className="grid gap-8 lg:grid-cols-2">
-          {/* Add Product Section */}
-          <section>
-            <div className="mb-4">
-              <h2 className="text-2xl font-bold text-foreground">
-                Add New Product
-              </h2>
-              <p className="text-muted-foreground">
-                Fill in the details to add a new product to your store
-              </p>
-            </div>
+        {/* Add Product Section */}
+        <section className="">
+          <div className="flex justify-center">
             <ProductForm />
-          </section>
-
+          </div>
+        </section>
+        <div className="grid gap-8 lg:grid-cols-2">
           {/* Product List Section */}
           <section className="lg:col-span-2">
             <div className="mb-4">

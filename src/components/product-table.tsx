@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -15,10 +15,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Loader2,
   Package,
@@ -26,90 +26,88 @@ import {
   Trash2,
   ChevronLeft,
   ChevronRight,
-} from "lucide-react"
-import { useToast } from "@/hooks/use-toast"
+} from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface Product {
-  ProductId: string
-  name: string
-  description: string
-  price: string
-  stock: number
-  category: string
-  image: string
-  createdAt: string
-  updatedAt: string
+  ProductId: string;
+  name: string;
+  description: string;
+  price: string;
+  stock: number;
+  category: string;
+  image: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
-const PAGE_SIZE = 5
+const PAGE_SIZE = 5;
 
 export function ProductTable() {
-  const [products, setProducts] = useState<Product[]>([])
-  const [loading, setLoading] = useState(true)
-  const [search, setSearch] = useState("")
-  const [page, setPage] = useState(1)
-  const { toast } = useToast()
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const { toast } = useToast();
 
   const fetchProducts = async () => {
     try {
-      setLoading(true)
+      setLoading(true);
       const res = await fetch(
         "https://api.newgeebags.com/api/v1/admin/getProducts"
-      )
+      );
 
-      if (!res.ok) throw new Error("Failed to fetch products")
+      if (!res.ok) throw new Error("Failed to fetch products");
 
-      const data = await res.json()
-      setProducts(data ?? [])
+      const data = await res.json();
+      setProducts(data ?? []);
     } catch (err) {
       toast({
         title: "Error",
         description: "Unable to load products",
         variant: "destructive",
-      })
+      });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchProducts()
-  }, [])
+    fetchProducts();
+  }, []);
 
   const filteredProducts = useMemo(() => {
     return products.filter((p) =>
-      `${p.name} ${p.category}`
-        .toLowerCase()
-        .includes(search.toLowerCase())
-    )
-  }, [products, search])
+      `${p.name} ${p.category}`.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [products, search]);
 
-  const totalPages = Math.ceil(filteredProducts.length / PAGE_SIZE)
+  const totalPages = Math.ceil(filteredProducts.length / PAGE_SIZE);
 
   const paginatedProducts = useMemo(() => {
-    const start = (page - 1) * PAGE_SIZE
-    return filteredProducts.slice(start, start + PAGE_SIZE)
-  }, [filteredProducts, page])
+    const start = (page - 1) * PAGE_SIZE;
+    return filteredProducts.slice(start, start + PAGE_SIZE);
+  }, [filteredProducts, page]);
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Delete this product?") ) return
+    if (!confirm("Delete this product?")) return;
 
     try {
       await fetch(
         `https://api.newgeebags.com/api/v1/admin/deleteProduct/${id}`,
         { method: "DELETE" }
-      )
+      );
 
-      toast({ title: "Deleted", description: "Product removed" })
-      fetchProducts()
+      toast({ title: "Deleted", description: "Product removed" });
+      fetchProducts();
     } catch {
       toast({
         title: "Error",
         description: "Delete failed",
         variant: "destructive",
-      })
+      });
     }
-  }
+  };
 
   if (loading) {
     return (
@@ -118,7 +116,7 @@ export function ProductTable() {
           <Loader2 className="h-8 w-8 animate-spin" />
         </CardContent>
       </Card>
-    )
+    );
   }
 
   if (products.length === 0) {
@@ -129,24 +127,22 @@ export function ProductTable() {
           <p className="font-semibold">No products yet</p>
         </CardContent>
       </Card>
-    )
+    );
   }
 
   return (
-    <Card>
+    <Card className="shadow-md">
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
           <CardTitle>Products</CardTitle>
-          <CardDescription>
-            Total: {filteredProducts.length}
-          </CardDescription>
+          <CardDescription>Total: {filteredProducts.length}</CardDescription>
         </div>
         <Input
           placeholder="Search name or category"
           value={search}
           onChange={(e) => {
-            setSearch(e.target.value)
-            setPage(1)
+            setSearch(e.target.value);
+            setPage(1);
           }}
           className="w-64"
         />
@@ -181,9 +177,7 @@ export function ProductTable() {
                 </TableCell>
                 <TableCell className="text-right">₹{p.price}</TableCell>
                 <TableCell className="text-right">
-                  <Badge
-                    variant={p.stock > 10 ? "default" : "destructive"}
-                  >
+                  <Badge variant={p.stock > 10 ? "default" : "destructive"}>
                     {p.stock}
                   </Badge>
                 </TableCell>
@@ -191,8 +185,8 @@ export function ProductTable() {
                   {new Date(p.createdAt).toLocaleDateString()}
                 </TableCell>
                 <TableCell className="text-right space-x-2">
-                  <Button size="icon" variant="outline">
-                    <Pencil className="h-4 w-4" />
+                  <Button size="icon" variant="outline" className="bg-blue-100">
+                    <Pencil className="h-4 w-4 text-blue-600" />
                   </Button>
                   <Button
                     size="icon"
@@ -231,5 +225,5 @@ export function ProductTable() {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }
