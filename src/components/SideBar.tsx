@@ -1,39 +1,54 @@
 import { Link } from "react-router-dom";
+import { FiSettings } from "react-icons/fi";
+import { FaUserCircle, FaUserShield } from "react-icons/fa";
+import { LuBox } from "react-icons/lu";
 
 const SideBar = () => {
   return (
-    <aside className="w-64 min-h-screen bg-[#f2f2f2]">
+    <aside className="w-60 min-h-screen bg-[#f2f2f2]">
       <nav className="p-4 space-y-2">
         <h2 className="text-lg text-foreground font-semibold mb-4">
           Admin Panel
         </h2>
 
         <Link
-          to="/manage-product"
-          className="block text-foreground px-4 py-2 rounded border-black hover:border-l-4 hover:bg-white "
+          to="/admin"
+          className="flex items-center gap-2 text-foreground px-4 py-2 rounded
+             border-l-4 border-transparent
+             hover:border-black hover:bg-white"
         >
-          Manage Product
+          <FaUserShield className="text-2xl" />
+          <span className="whitespace-nowrap">Admin</span>
         </Link>
 
         <Link
-          to="/admin"
-          className={`block text-foreground px-4 py-2 rounded border-black hover:border-l-4 hover:bg-white`}
+          to="/manage-product"
+          className="flex items-center gap-2 text-foreground px-4 py-2 rounded
+             border-l-4 border-transparent
+             hover:border-black hover:bg-white"
         >
-          Admin
+          <LuBox className="text-2xl" />
+          <span className="whitespace-nowrap">Manage Products</span>
         </Link>
 
         <Link
           to="/profile"
-          className={`block text-foreground px-4 py-2 rounded border-black hover:border-l-4 hover:bg-white`}
+          className="flex items-center gap-2 text-foreground px-4 py-2 rounded
+             border-l-4 border-transparent
+             hover:border-black hover:bg-white"
         >
-          Profile
+          <FaUserCircle className="text-2xl" />
+          <span className="whitespace-nowrap">Profile</span>
         </Link>
 
         <Link
           to="/settings"
-          className={`block text-foreground px-4 py-2 rounded border-black hover:border-l-4 hover:bg-white`}
+          className="flex items-center gap-2 text-foreground px-4 py-2 rounded
+             border-l-4 border-transparent
+             hover:border-black hover:bg-white"
         >
-          Setting
+          <FiSettings className="text-2xl" />
+          <span className="whitespace-nowrap">Setting</span>
         </Link>
       </nav>
     </aside>
