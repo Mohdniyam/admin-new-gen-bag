@@ -131,7 +131,7 @@ export function ProductTable() {
   }
 
   return (
-    <Card className="shadow-md">
+    <Card className="shadow-md mx-2 mb-2">
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
           <CardTitle>Products</CardTitle>

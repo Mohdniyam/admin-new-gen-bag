@@ -6,6 +6,7 @@ import SignUp from "./screens/SignUp";
 import SignIn from "./screens/SignIn";
 import { ToastContainer } from "react-toastify";
 import Profile from "./screens/Profile";
+import ProtectedRouteLayout from "./components/layout/ProtectedRouteLayout";
 export function App() {
   return (
     <div>
@@ -41,22 +42,17 @@ export function App() {
 
           {/* Private Routes */}
           <Route
-            path="/admin"
             element={
               <ProtectedRoute>
-                <AdminPage />
+                <ProtectedRouteLayout />
               </ProtectedRoute>
             }
-          />
-
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            }
-          />
+          >
+            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/manage-product" element={<Profile />} />
+            <Route path="/settings" element={<Profile />} />
+          </Route>
         </Routes>
       </BrowserRouter>
 

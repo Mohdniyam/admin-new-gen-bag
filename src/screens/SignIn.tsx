@@ -39,7 +39,7 @@ const SignIn = () => {
 
     localStorage.setItem("user", JSON.stringify(savedUser));
 
-    navigate("/admin", { replace: true });
+    navigate("/admin");
     toast.success("Login successfully!", { position: "top-center" });
   };
 

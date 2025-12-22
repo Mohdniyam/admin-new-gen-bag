@@ -28,7 +28,7 @@ const SignUp = () => {
     // Save only registered user (NOT logged in)
     localStorage.setItem("registeredUser", JSON.stringify(registeredUser));
 
-    navigate("/login", { replace: true });
+    navigate("/login");
     toast.success("Signup successful! Please login.", {
       position: "top-center",
     });

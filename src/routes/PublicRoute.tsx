@@ -1,9 +1,9 @@
 import { Navigate } from "react-router-dom";
 
-const PublicRoute = ({ children }: { children: JSX.Element }) => {
+const PublicRoute = ({ children }) => {
   const isAuth = !!localStorage.getItem("user");
 
-  return isAuth ? <Navigate to="/admin" replace /> : children;
+  return isAuth ? <Navigate to="/admin" /> : children;
 };
 
 export default PublicRoute;

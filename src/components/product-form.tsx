@@ -108,17 +108,17 @@ export function ProductForm() {
   };
 
   return (
-    <Card className="w-full shadow-md mb-8 p-0 gap-0">
-      <div className="border-b flex justify-between py-4 ">
+    <Card className="w-full shadow-md my-8 mx-2 p-0 gap-0">
+      <div className="border-b flex justify-between py-6 ">
         <div>
-          <h2 className="text-2xl font-bold text-foreground mx-4">
+          <h2 className="text-xl font-bold text-foreground mx-6">
             Add New Product
           </h2>
-          <p className="text-muted-foreground mx-4">
+          <p className="text-sm text-muted-foreground mx-6">
             Fill in the details to add a new product to your store
           </p>
         </div>
-        <div className="flex items-center justify-center pr-4">
+        <div className="flex items-center justify-center mx-4">
           <Button
             type="submit"
             className="rounded-xl bg-blue-600 hover:bg-blue-500 cursor-pointer px-6 py-2"
