@@ -35,8 +35,9 @@ const Header = () => {
           </p>
         </div>
       </div>
+      {/* User Profile Button */}
       <div
-        className="flex items-center hover:bg-[#f3f3f5] rounded-md cursor-pointer m-4"
+        className="flex items-center hover:bg-[#f2f2f2] rounded-md cursor-pointer m-4"
         onClick={() => setOpen(!open)}
       >
         {/* Icon */}
@@ -50,7 +51,7 @@ const Header = () => {
           <IoIosArrowDown className="" />
         </div>
       </div>
-
+      {/* User Profile Dropdown */}
       {open && (
         <div className="absolute top-18 right-0 mt-0.5 mr-2 w-34 bg-white text-gray-500 rounded-md shadow-lg border">
           <button

@@ -7,6 +7,9 @@ import SignIn from "./screens/SignIn";
 import { ToastContainer } from "react-toastify";
 import Profile from "./screens/Profile";
 import ProtectedRouteLayout from "./components/layout/ProtectedRouteLayout";
+import Setting from "./screens/Setting";
+import ManageOrders from "./features/orders/OrdersPage";
+
 export function App() {
   return (
     <div>
@@ -50,12 +53,13 @@ export function App() {
           >
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/manage-product" element={<Profile />} />
-            <Route path="/settings" element={<Profile />} />
+            <Route path="/orders" element={<ManageOrders />}>
+              <Route path=":status" element={<ManageOrders />} />
+            </Route>
+            <Route path="/settings" element={<Setting />} />
           </Route>
         </Routes>
       </BrowserRouter>
-
       <ToastContainer autoClose={1000} />
     </div>
   );

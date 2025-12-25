@@ -4,15 +4,19 @@ import { Outlet } from "react-router-dom";
 
 const ProtectedRouteLayout = () => {
   return (
-    <section className="flex flex-col">
-      <Header />
+    <div className="flex flex-col">
+      <header>
+        <Header />
+      </header>
       <div className=" flex flex-1">
-        <SideBar />
+        <aside>
+          <SideBar />
+        </aside>
         <main className="flex-1">
           <Outlet />
         </main>
       </div>
-    </section>
+    </div>
   );
 };
 

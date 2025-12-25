@@ -10,7 +10,7 @@ const Profile = () => {
       label: "User Name",
       key: "name",
       showInProfileCard: true,
-      profileClassName: "text-blue-700",
+      profileClassName: "text-blue-600",
     },
     {
       label: "User Role",
@@ -39,8 +39,8 @@ const Profile = () => {
         <div className="flex gap-2 w-full">
           <div className="w-full h-full grid gap-4 mx-2 ">
             <div className="flex items-center gap-3 mt-4 ">
-              <h2 className="font-bold text-blue-700 text-lg">My Profile</h2>
-              <div className="grow border-t-2 border-gray-300 mx-3" />
+              <h2 className="font-bold text-blue-600 text-xl">My Profile</h2>
+              <div className="grow border-t-2 border-gray-200 mx-3" />
             </div>
             {/* Profile Card */}
             <div className="flex items-center justify-start shadow-md border bg-white rounded-2xl w-full min-h-32 p-4">
@@ -64,7 +64,7 @@ const Profile = () => {
             {/* Personal info Card */}
             <div className="border bg-white rounded-2xl shadow-md w-full min-h-60 p-4 mb-2 overflow-auto ">
               <div className="flex justify-between mb-2 mx-4">
-                <h3 className="text-blue-700 text-lg font-normal">
+                <h3 className="text-blue-600 text-lg font-bold">
                   Personal Information
                 </h3>
                 <Button

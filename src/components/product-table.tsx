@@ -121,7 +121,7 @@ export function ProductTable() {
 
   if (products.length === 0) {
     return (
-      <Card>
+      <Card className="mx-2">
         <CardContent className="flex flex-col items-center py-12">
           <Package className="h-12 w-12 text-muted-foreground mb-4" />
           <p className="font-semibold">No products yet</p>
