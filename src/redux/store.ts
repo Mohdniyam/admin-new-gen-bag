@@ -1,9 +1,11 @@
 import ordersManagementReducer from "@/features/orders/ordersManagementSlice";
+import returnManagementReducer from "@/features/rto/return/returnManagementSlice";
 import { configureStore } from "@reduxjs/toolkit";
 
 export const store = configureStore({
   reducer: {
     orders: ordersManagementReducer,
+    return: returnManagementReducer,
   },
 });
 

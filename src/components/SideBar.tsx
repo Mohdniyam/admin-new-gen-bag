@@ -2,6 +2,7 @@ import { useLocation, Link } from "react-router-dom";
 import { FiSettings } from "react-icons/fi";
 import { FaUserCircle, FaUserShield } from "react-icons/fa";
 import { LuBox } from "react-icons/lu";
+import { LiaUndoAltSolid } from "react-icons/lia";
 
 import type { ComponentType } from "react";
 interface SidebarItem {
@@ -25,6 +26,12 @@ const sidebarItems: SidebarItem[] = [
     isActive: (pathname: string) => pathname.startsWith("/orders"),
   },
   {
+    label: "Manage RTO / Returns",
+    path: "/returns",
+    icon: LiaUndoAltSolid,
+    isActive: (pathname: string) => pathname.startsWith("/return"),
+  },
+  {
     label: "Profile",
     path: "/profile",
     icon: FaUserCircle,
@@ -40,15 +47,15 @@ const sidebarItems: SidebarItem[] = [
 
 const SideBar = () => {
   // ClassNames as a Variable
-  const baseClasses = `flex items-center gap-2 text-foreground px-4 py-2 rounded
-  border-l-4 border-transparent hover:font-bold`;
-  const activeClasses = "bg-gray-200 font-bold";
+  const baseClasses = `flex items-center gap-2 text-foreground px-4 py-2 rounded 
+  border-l-4 border-transparent hover:font-semibold`;
+  const activeClasses = "bg-gray-200 font-semibold";
   const inactiveClasses = "hover:border-black hover:bg-white";
 
   const location = useLocation();
 
   return (
-    <div className="w-60 min-h-screen bg-[#f2f2f2]">
+    <div className="w-65 min-h-screen bg-[#f2f2f2]">
       <nav className="p-4 space-y-2">
         <h2 className="text-lg text-foreground font-semibold mb-4">
           Admin Panel
@@ -65,7 +72,7 @@ const SideBar = () => {
                 isActive ? activeClasses : inactiveClasses
               }`}
             >
-              <Icon className="text-2xl" />
+              <Icon className="text-2xl shrink-0" />
               <span className="whitespace-nowrap">{item.label}</span>
             </Link>
           );

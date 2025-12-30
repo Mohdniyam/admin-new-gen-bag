@@ -1,49 +1,40 @@
 import { NavLink } from "react-router-dom";
-import { changeTab } from "./ordersManagementSlice";
 import { useAppSelector, useAppDispatch } from "@/hooks/redux-hook";
+import { changeTab } from "./returnManagementSlice";
+// import { useEffect } from "react";
+import { RETURN_STATUS, type ReturnStatus } from "./types";
 import { useEffect } from "react";
-import { ORDER_STATUS, type OrderStatus } from "./types";
-import { selectOrderCounts } from "./OrdersSelectors";
 
-const tabs = Object.values(ORDER_STATUS);
-
-const OrderStatusTabs = () => {
+const tabs = Object.values(RETURN_STATUS);
+const ReturnStatusTabs = () => {
   const dispatch = useAppDispatch();
-  const active = useAppSelector((state) => state.orders.activeStatus);
-  console.log(active);
-  const counts = useAppSelector(selectOrderCounts);
+  const active = useAppSelector((state) => state.return.activeStatus);
 
   useEffect(() => {
     const statusFromUrl = location.pathname.split("/").pop();
 
-    if (statusFromUrl && tabs.includes(statusFromUrl as OrderStatus)) {
-      dispatch(changeTab(statusFromUrl as OrderStatus));
+    if (statusFromUrl && tabs.includes(statusFromUrl as ReturnStatus)) {
+      dispatch(changeTab(statusFromUrl as ReturnStatus));
     }
   }, [location.pathname, dispatch]);
-
   return (
-    <div className="">
+    <>
       <div className="flex gap-6 mx-4 border-b-4 border-[#f2f2f2]">
         {tabs.map((tab) => (
           <NavLink
             key={tab}
-            to={`/orders/${tab}`}
+            to={`/returns/${tab}`}
             onClick={() => dispatch(changeTab(tab))}
             className={`font-medium flex items-center gap-2 p-2 border-b-4 -mb-1 capitalize cursor-pointer ${
               active === tab ? "border-black" : "border-transparent"
             }`}
           >
             {tab.replaceAll("_", " ")}
-            {counts[tab] > 0 && (
-              <span className="border border-black text-xs font-bold px-1 rounded-xs">
-                {counts[tab]}
-              </span>
-            )}
           </NavLink>
         ))}
       </div>
-    </div>
+    </>
   );
 };
 
-export default OrderStatusTabs;
+export default ReturnStatusTabs;

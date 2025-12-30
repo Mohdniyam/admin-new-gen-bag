@@ -21,7 +21,7 @@ const Header = () => {
   const user = JSON.parse(storedUser);
   const userName = user.name;
   return (
-    <div className="flex w-full border-b shadow-xl border-border z-20 bg-card h-18 ">
+    <div className="flex w-full border-b  border-border bg-card h-18 ">
       <div className="container mx-auto px-4 py-4 flex items-center gap-3">
         <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100">
           <Package className="h-7 w-7 text-blue-600" />

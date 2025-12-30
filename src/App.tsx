@@ -8,7 +8,8 @@ import { ToastContainer } from "react-toastify";
 import Profile from "./screens/Profile";
 import ProtectedRouteLayout from "./components/layout/ProtectedRouteLayout";
 import Setting from "./screens/Setting";
-import ManageOrders from "./features/orders/OrdersPage";
+import OrdersPage from "./screens/OrdersPage";
+import ReturnPage from "./screens/ReturnPage";
 
 export function App() {
   return (
@@ -53,8 +54,11 @@ export function App() {
           >
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/orders" element={<ManageOrders />}>
-              <Route path=":status" element={<ManageOrders />} />
+            <Route path="/orders" element={<OrdersPage />}>
+              <Route path=":status" element={<OrdersPage />} />
+            </Route>
+            <Route path="/returns" element={<ReturnPage />}>
+              <Route path=":status" element={<ReturnPage />} />
             </Route>
             <Route path="/settings" element={<Setting />} />
           </Route>
