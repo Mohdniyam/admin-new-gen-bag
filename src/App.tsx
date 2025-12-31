@@ -10,6 +10,7 @@ import ProtectedRouteLayout from "./components/layout/ProtectedRouteLayout";
 import Setting from "./screens/Setting";
 import OrdersPage from "./screens/OrdersPage";
 import ReturnPage from "./screens/ReturnPage";
+import ManageInventoryPage from "./screens/ManageInventoryPage";
 
 export function App() {
   return (
@@ -54,6 +55,7 @@ export function App() {
           >
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/inventory" element={<ManageInventoryPage />} />
             <Route path="/orders" element={<OrdersPage />}>
               <Route path=":status" element={<OrdersPage />} />
             </Route>

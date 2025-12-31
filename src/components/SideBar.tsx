@@ -1,7 +1,6 @@
 import { useLocation, Link } from "react-router-dom";
-import { FiSettings } from "react-icons/fi";
+import { FiBox, FiClipboard, FiSettings } from "react-icons/fi";
 import { FaUserCircle, FaUserShield } from "react-icons/fa";
-import { LuBox } from "react-icons/lu";
 import { LiaUndoAltSolid } from "react-icons/lia";
 
 import type { ComponentType } from "react";
@@ -22,7 +21,7 @@ const sidebarItems: SidebarItem[] = [
   {
     label: "Manage Orders",
     path: "/orders",
-    icon: LuBox,
+    icon: FiClipboard,
     isActive: (pathname: string) => pathname.startsWith("/orders"),
   },
   {
@@ -30,6 +29,12 @@ const sidebarItems: SidebarItem[] = [
     path: "/returns",
     icon: LiaUndoAltSolid,
     isActive: (pathname: string) => pathname.startsWith("/return"),
+  },
+  {
+    label: "Manage Inventory",
+    path: "/inventory",
+    icon: FiBox,
+    isActive: (pathname: string) => pathname === "/inventory",
   },
   {
     label: "Profile",
