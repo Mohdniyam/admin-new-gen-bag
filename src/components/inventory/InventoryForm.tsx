@@ -7,25 +7,23 @@ import {
   CardTitle,
 } from "../ui/card";
 import { Button } from "../ui/button";
-import BasicInfoStep from "./steps/BasicInfoStep";
 import { useToast } from "@/hooks/use-toast";
 import { useCallback, useState } from "react";
 import { defaultFormData, type InventoryFormData } from "./InventoryFormTypes";
-import StockDetailsStep from "./steps/StockDetailsStep";
-import PricingStep from "./steps/PricingStep";
-import ShippingStep from "./steps/ShippingStep";
 import StepIndicator from "./StepIndicator";
+import BasicInfoStep from "./steps/BasicInfoStep";
+import VariantDetailsStep from "./steps/VariantDetailsStep";
 import ReviewStep from "./steps/ReviewStep";
+
 const steps = [
   { id: 1, title: "Basic Product Information", shortTitle: "Basic Info" },
-  { id: 2, title: "Inventory & Stock Details", shortTitle: "Stock" },
-  { id: 3, title: "Pricing Information", shortTitle: "Pricing" },
-  { id: 4, title: "Shipping & Physical Details", shortTitle: "Shipping" },
-  { id: 5, title: "Review & Confirmation", shortTitle: "Review" },
+  { id: 2, title: "Product Details", shortTitle: "Details" },
+  { id: 3, title: "Review & Confirmation", shortTitle: "Review" },
 ];
 
+// Inventory Component start here ..
 const InventoryForm = () => {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(2);
   const [formData, setFormData] = useState<InventoryFormData>(defaultFormData);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -58,52 +56,52 @@ const InventoryForm = () => {
           newErrors.category = "Category is required";
         }
         break;
-      case 2:
-        if (formData.quantity < 0) {
-          newErrors.quantity = "Quantity cannot be negative";
+      case 2: {
+        if (formData.variants.length <= 0) {
+          newErrors.variants = "At least one variant is required";
         }
-        if (!formData.warehouseLocation) {
-          newErrors.warehouseLocation = "Warehouse location is required";
-        }
+
+        // const hasVariantValues = formData.variants.some(
+        //   (v) => v.values.length > 0
+        // );
+
+        // if (hasVariantValues && formData.pricing.length === 0) {
+        //   newErrors.pricing = "Pricing is required for variants";
+        // }
+
+        // const hasInvalidPricing = formData.pricing.some((p) => {
+        //   if (p.costPrice <= 0) return true;
+        //   if (p.sellingPrice <= 0) return true;
+        //   if (p.sellingPrice < p.costPrice) return true;
+        //   return false;
+        // });
+
+        // if (hasInvalidPricing) {
+        //   newErrors.pricing =
+        //     "Each variant must have valid cost & selling price";
+        // }
+
+        // if (formData.weight <= 0) newErrors.weight = "Weight is required";
+        // if (formData.length <= 0) newErrors.length = "Length is required";
+        // if (formData.width <= 0) newErrors.width = "Width is required";
+        // if (formData.height <= 0) newErrors.height = "Height is required";
+
         break;
-      case 3:
-        if (formData.costPrice <= 0) {
-          newErrors.costPrice = "Cost price is required";
-        }
-        if (formData.sellingPrice <= 0) {
-          newErrors.sellingPrice = "Selling price is required";
-        }
-        if (formData.sellingPrice < formData.costPrice) {
-          newErrors.sellingPrice =
-            "Selling price should be higher than cost price";
-        }
-        break;
-      case 4:
-        if (formData.weight <= 0) {
-          newErrors.weight = "Weight is required";
-        }
-        if (formData.length <= 0) {
-          newErrors.length = "Length is required";
-        }
-        if (formData.width <= 0) {
-          newErrors.width = "Width is required";
-        }
-        if (formData.height <= 0) {
-          newErrors.height = "Height is required";
-        }
-        break;
+      }
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
+  // handle next button
   const handleNext = () => {
     if (validateStep(currentStep)) {
       setCurrentStep((prev) => Math.min(prev + 1, steps.length));
     }
   };
 
+  // handle back button
   const handleBack = () => {
     setCurrentStep((prev) => Math.max(prev - 1, 1));
   };
@@ -180,29 +178,13 @@ const InventoryForm = () => {
         );
       case 2:
         return (
-          <StockDetailsStep
+          <VariantDetailsStep
             formData={formData}
             onChange={updateFormData}
             errors={errors}
           />
         );
       case 3:
-        return (
-          <PricingStep
-            formData={formData}
-            onChange={updateFormData}
-            errors={errors}
-          />
-        );
-      case 4:
-        return (
-          <ShippingStep
-            formData={formData}
-            onChange={updateFormData}
-            errors={errors}
-          />
-        );
-      case 5:
         return <ReviewStep formData={formData} onEditStep={setCurrentStep} />;
       default:
         return null;
@@ -229,10 +211,8 @@ const InventoryForm = () => {
           <CardDescription>
             {currentStep === 1 && "Enter the basic details about your product"}
             {currentStep === 2 &&
-              "Set up inventory quantities and stock alerts"}
-            {currentStep === 3 && "Configure pricing, taxes, and discounts"}
-            {currentStep === 4 && "Add shipping dimensions and weight"}
-            {currentStep === 5 && "Review all information before saving"}
+              "Add variants, pricing, and shipping information"}
+            {currentStep === 3 && "Review all information before saving"}
           </CardDescription>
         </div>
 

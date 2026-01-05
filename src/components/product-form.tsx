@@ -1,7 +1,6 @@
 "use client";
 
 import type React from "react";
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -146,7 +145,7 @@ export function ProductForm() {
               <Input
                 id="name"
                 placeholder="Enter product name"
-                className="bg-[#fbfaf9]"
+                className="focus-visible:ring-1 focus-visible:ring-blue-600 focus:border-none"
                 value={formData.name}
                 onChange={(e) =>
                   setFormData({ ...formData, name: e.target.value })
@@ -160,7 +159,7 @@ export function ProductForm() {
               <Textarea
                 id="description"
                 placeholder="Enter product description"
-                className="bg-[#fbfaf9]"
+                className="focus-visible:ring-1 focus-visible:ring-blue-600 focus:border-none"
                 value={formData.description}
                 onChange={(e) =>
                   setFormData({ ...formData, description: e.target.value })
@@ -178,7 +177,7 @@ export function ProductForm() {
                   type="number"
                   step="0.01"
                   placeholder="0.00"
-                  className="bg-[#fbfaf9]"
+                  className="focus-visible:ring-1 focus-visible:ring-blue-600 focus:border-none"
                   value={formData.price}
                   onChange={(e) =>
                     setFormData({ ...formData, price: e.target.value })
@@ -193,7 +192,7 @@ export function ProductForm() {
                   id="stock"
                   type="number"
                   placeholder="0"
-                  className="bg-[#fbfaf9]"
+                  className="focus-visible:ring-1 focus-visible:ring-blue-600 focus:border-none"
                   value={formData.stock}
                   onChange={(e) =>
                     setFormData({ ...formData, stock: e.target.value })
@@ -210,7 +209,7 @@ export function ProductForm() {
               <Input
                 id="category"
                 placeholder="e.g., photo, laptop, travel"
-                className="bg-[#fbfaf9]"
+                className="focus-visible:ring-1 focus-visible:ring-blue-600 focus:border-none"
                 value={formData.category}
                 onChange={(e) =>
                   setFormData({ ...formData, category: e.target.value })

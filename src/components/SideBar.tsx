@@ -36,6 +36,10 @@ const sidebarItems: SidebarItem[] = [
     icon: FiBox,
     isActive: (pathname: string) => pathname === "/inventory",
   },
+];
+
+// bottom Links
+const bottomSidebarItems: SidebarItem[] = [
   {
     label: "Profile",
     path: "/profile",
@@ -60,7 +64,8 @@ const SideBar = () => {
   const location = useLocation();
 
   return (
-    <div className="w-65 min-h-screen bg-[#f2f2f2]">
+    <div className="w-70 min-h-screen bg-[#f2f2f2] flex flex-col">
+      {/* TOP LINKS  */}
       <nav className="p-4 space-y-2">
         <h2 className="text-lg text-foreground font-semibold mb-4">
           Admin Panel
@@ -83,6 +88,25 @@ const SideBar = () => {
           );
         })}
       </nav>
+      {/* BOTTOM LINKS */}
+      <div className="p-4 space-y-2 fixed bottom-0 left-0 w-70 bg-[#f2f2f2]">
+        {bottomSidebarItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = item.isActive(location.pathname);
+          return (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`${baseClasses} ${
+                isActive ? activeClasses : inactiveClasses
+              }`}
+            >
+              <Icon className="text-2xl shrink-0" />
+              <span className="whitespace-nowrap">{item.label}</span>
+            </Link>
+          );
+        })}
+      </div>
     </div>
   );
 };

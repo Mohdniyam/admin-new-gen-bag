@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { type InventoryFormData } from "../InventoryFormTypes";
-import { Package, Layers, DollarSign, Truck, Edit2 } from "lucide-react";
+import { Package, Layers, Truck, Edit2 } from "lucide-react";
 
 interface ReviewStepProps {
   formData: InventoryFormData;
@@ -56,23 +56,6 @@ export const InfoRow = ({ label, value }: InfoRowProps) => (
 );
 
 const ReviewStep = ({ formData, onEditStep }: ReviewStepProps) => {
-  const getStatusBadge = () => {
-    switch (formData.stockStatus) {
-      case "in_stock":
-        return (
-          <Badge className="bg-success-background text-success">In Stock</Badge>
-        );
-      case "low_stock":
-        return (
-          <Badge className="bg-warning-background text-warning">
-            Low Stock
-          </Badge>
-        );
-      case "out_of_stock":
-        return <Badge variant="destructive">Out of Stock</Badge>;
-    }
-  };
-
   const getShippingBadge = () => {
     switch (formData.shippingCategory) {
       case "light":
@@ -88,13 +71,15 @@ const ReviewStep = ({ formData, onEditStep }: ReviewStepProps) => {
     }
   };
 
-  const calculateFinalPrice = () => {
-    const basePrice = formData.sellingPrice || 0;
-    const discountAmount = (basePrice * (formData.discount || 0)) / 100;
-    const priceAfterDiscount = basePrice - discountAmount;
-    const taxAmount =
-      (priceAfterDiscount * (formData.taxPercentage || 0)) / 100;
-    return priceAfterDiscount + taxAmount;
+  const calculateFinalPrice = (
+    selling: number,
+    tax: number,
+    discount: number
+  ) => {
+    const discountAmount = (selling * discount) / 100;
+    const afterDiscount = selling - discountAmount;
+    const taxAmount = (afterDiscount * tax) / 100;
+    return afterDiscount + taxAmount;
   };
 
   return (
@@ -132,68 +117,85 @@ const ReviewStep = ({ formData, onEditStep }: ReviewStepProps) => {
       </SectionCard>
 
       <SectionCard
-        title="Inventory & Stock Details"
+        title="Product Details (Variants, Pricing & Shipping)"
         step={2}
         icon={Layers}
         onEditStep={onEditStep}
       >
-        <InfoRow label="Available Quantity" value={formData.quantity} />
-        <InfoRow label="Min Stock Level" value={formData.minStockLevel} />
-        <InfoRow label="Stock Status" value={getStatusBadge()} />
+        {/* VARIANTS */}
         <InfoRow
-          label="Warehouse Location"
-          value={formData.warehouseLocation}
+          label="Variants"
+          value={
+            formData.variants.length
+              ? formData.variants
+                  .map((v) => `${v.name}: ${v.values.join(", ")}`)
+                  .join(" | ")
+              : "No variants added"
+          }
         />
-      </SectionCard>
 
-      <SectionCard
-        title="Pricing Information"
-        step={3}
-        icon={DollarSign}
-        onEditStep={onEditStep}
-      >
-        <InfoRow
-          label="Cost Price"
-          value={`₹${formData.costPrice?.toFixed(2)}`}
-        />
-        <InfoRow
-          label="Selling Price"
-          value={`₹${formData.sellingPrice?.toFixed(2)}`}
-        />
-        <InfoRow label="Tax / GST" value={`${formData.taxPercentage}%`} />
-        <InfoRow
-          label="Discount"
-          value={formData.discount ? `${formData.discount}%` : "None"}
-        />
-        <div className="pt-3 mt-2 border-t border-border">
-          <div className="flex justify-between">
-            <span className="font-semibold">Final Price</span>
-            <span className="font-bold text-lg text-primary">
-              ₹{calculateFinalPrice().toFixed(2)}
-            </span>
-          </div>
+        {/* PRICING */}
+        <div className="mt-4 space-y-3">
+          <span className="text-sm font-semibold text-muted-foreground">
+            Pricing
+          </span>
+
+          {formData.pricing.length === 0 ? (
+            <p className="text-sm text-muted-foreground">No pricing defined</p>
+          ) : (
+            formData.pricing.map((p) => (
+              <div
+                key={p.id}
+                className="rounded-md border p-3 text-sm space-y-1"
+              >
+                <p className="font-medium">{p.value}</p>
+
+                <div className="grid grid-cols-2 gap-x-4">
+                  <span>Cost:</span>
+                  <span className="text-right">₹{p.costPrice.toFixed(2)}</span>
+
+                  <span>Selling:</span>
+                  <span className="text-right">
+                    ₹{p.sellingPrice.toFixed(2)}
+                  </span>
+
+                  <span>Tax:</span>
+                  <span className="text-right">{p.taxPercentage}%</span>
+
+                  <span>Discount:</span>
+                  <span className="text-right">
+                    {p.discount ? `${p.discount}%` : "—"}
+                  </span>
+
+                  <span className="font-semibold">Final:</span>
+                  <span className="text-right font-semibold text-primary">
+                    ₹
+                    {calculateFinalPrice(
+                      p.sellingPrice,
+                      p.taxPercentage,
+                      p.discount
+                    ).toFixed(2)}
+                  </span>
+                </div>
+              </div>
+            ))
+          )}
         </div>
-      </SectionCard>
 
-      <SectionCard
-        title="Shipping & Physical Details"
-        step={4}
-        icon={Truck}
-        onEditStep={onEditStep}
-      >
-        <InfoRow label="Weight" value={`${formData.weight?.toFixed(2)} kg`} />
-        <InfoRow
-          label="Dimensions"
-          value={`${formData.length} × ${formData.width} × ${formData.height} cm`}
-        />
-        <InfoRow
-          label="Volumetric Weight"
-          value={`${(
-            (formData.length * formData.width * formData.height) /
-            5000
-          ).toFixed(2)} kg`}
-        />
-        <InfoRow label="Shipping Category" value={getShippingBadge()} />
+        {/* SHIPPING */}
+        <div className="mt-6 space-y-2">
+          <span className="flex text-center gap-2 text-sm font-semibold text-muted-foreground">
+            <Truck className="w-5 h-5 text-blue-600" />
+            Shipping Details
+          </span>
+
+          <InfoRow label="Weight" value={`${formData.weight} kg`} />
+          <InfoRow
+            label="Dimensions"
+            value={`${formData.length} × ${formData.width} × ${formData.height} cm`}
+          />
+          <InfoRow label="Shipping Category" value={getShippingBadge()} />
+        </div>
       </SectionCard>
     </div>
   );

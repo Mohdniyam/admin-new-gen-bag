@@ -33,7 +33,9 @@ const BasicInfoStep = ({ formData, onChange, errors }: BasicInfoStepProps) => {
           placeholder="Enter product name"
           value={formData.productName}
           onChange={(e) => onChange({ productName: e.target.value })}
-          className={`${errors.productName ? "border-destructive" : ""}`}
+          className={`focus-visible:ring-blue-200 ${
+            errors.productName ? "border-destructive" : ""
+          }`}
         />
         {errors.productName && (
           <p className="text-sm text-destructive">{errors.productName}</p>
@@ -53,7 +55,9 @@ const BasicInfoStep = ({ formData, onChange, errors }: BasicInfoStepProps) => {
           placeholder="e.g., SKU-12345-BLK"
           value={formData.sku}
           onChange={(e) => onChange({ sku: e.target.value.toUpperCase() })}
-          className={errors.sku ? "border-destructive" : ""}
+          className={`focus-visible:ring-blue-200 ${
+            errors.sku ? "border-destructive" : ""
+          }`}
         />
         {errors.sku && <p className="text-sm text-destructive">{errors.sku}</p>}
       </div>
@@ -103,6 +107,7 @@ const BasicInfoStep = ({ formData, onChange, errors }: BasicInfoStepProps) => {
             placeholder="Enter brand name"
             value={formData.brand}
             onChange={(e) => onChange({ brand: e.target.value })}
+            className="focus-visible:ring-blue-200"
           />
         </div>
       </div>
@@ -121,7 +126,7 @@ const BasicInfoStep = ({ formData, onChange, errors }: BasicInfoStepProps) => {
           value={formData.description}
           onChange={(e) => onChange({ description: e.target.value })}
           rows={4}
-          className="resize-none"
+          className="focus-visible:ring-blue-200 resize-none"
         />
       </div>
     </div>
