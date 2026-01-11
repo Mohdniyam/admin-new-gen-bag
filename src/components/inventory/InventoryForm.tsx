@@ -60,32 +60,6 @@ const InventoryForm = () => {
         if (formData.variants.length <= 0) {
           newErrors.variants = "At least one variant is required";
         }
-
-        // const hasVariantValues = formData.variants.some(
-        //   (v) => v.values.length > 0
-        // );
-
-        // if (hasVariantValues && formData.pricing.length === 0) {
-        //   newErrors.pricing = "Pricing is required for variants";
-        // }
-
-        // const hasInvalidPricing = formData.pricing.some((p) => {
-        //   if (p.costPrice <= 0) return true;
-        //   if (p.sellingPrice <= 0) return true;
-        //   if (p.sellingPrice < p.costPrice) return true;
-        //   return false;
-        // });
-
-        // if (hasInvalidPricing) {
-        //   newErrors.pricing =
-        //     "Each variant must have valid cost & selling price";
-        // }
-
-        // if (formData.weight <= 0) newErrors.weight = "Weight is required";
-        // if (formData.length <= 0) newErrors.length = "Length is required";
-        // if (formData.width <= 0) newErrors.width = "Width is required";
-        // if (formData.height <= 0) newErrors.height = "Height is required";
-
         break;
       }
     }

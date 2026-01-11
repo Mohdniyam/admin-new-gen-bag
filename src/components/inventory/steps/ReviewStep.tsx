@@ -128,7 +128,12 @@ const ReviewStep = ({ formData, onEditStep }: ReviewStepProps) => {
           value={
             formData.variants.length
               ? formData.variants
-                  .map((v) => `${v.name}: ${v.values.join(", ")}`)
+                  .map(
+                    (v) =>
+                      `${v.name}: ${v.values
+                        .map((val) => val.value)
+                        .join(", ")}`
+                  )
                   .join(" | ")
               : "No variants added"
           }
@@ -136,7 +141,7 @@ const ReviewStep = ({ formData, onEditStep }: ReviewStepProps) => {
 
         {/* PRICING */}
         <div className="mt-4 space-y-3">
-          <span className="text-sm font-semibold text-muted-foreground">
+          <span className="text-sm font-semibold text-muted-foreground mb-2">
             Pricing
           </span>
 
@@ -146,28 +151,28 @@ const ReviewStep = ({ formData, onEditStep }: ReviewStepProps) => {
             formData.pricing.map((p) => (
               <div
                 key={p.id}
-                className="rounded-md border p-3 text-sm space-y-1"
+                className="rounded-md border p-3 text-sm space-y-1 mt-4"
               >
-                <p className="font-medium">{p.value}</p>
+                <p className="font-medium text-gray-600">{p.value}</p>
 
                 <div className="grid grid-cols-2 gap-x-4">
-                  <span>Cost:</span>
+                  <span className="text-gray-600 my-1">Cost:</span>
                   <span className="text-right">₹{p.costPrice.toFixed(2)}</span>
 
-                  <span>Selling:</span>
+                  <span className="text-gray-600 my-1">Selling:</span>
                   <span className="text-right">
                     ₹{p.sellingPrice.toFixed(2)}
                   </span>
 
-                  <span>Tax:</span>
+                  <span className="text-gray-600 my-1">Tax:</span>
                   <span className="text-right">{p.taxPercentage}%</span>
 
-                  <span>Discount:</span>
+                  <span className="text-gray-600 my-1">Discount:</span>
                   <span className="text-right">
                     {p.discount ? `${p.discount}%` : "—"}
                   </span>
 
-                  <span className="font-semibold">Final:</span>
+                  <span className="font-semibold my-1">Final:</span>
                   <span className="text-right font-semibold text-primary">
                     ₹
                     {calculateFinalPrice(

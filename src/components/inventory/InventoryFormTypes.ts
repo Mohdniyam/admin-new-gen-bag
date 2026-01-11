@@ -1,41 +1,43 @@
-// Variant type (Step 2)
+// Variant Types
+export interface VariantValue {
+  id: string;
+  value: string;
+  image?: string;
+}
+
 export interface ProductVariant {
   id: string;
   name: string;
-  values: string[];
+  values: VariantValue[];
 }
 
-// InventoryFormTypes.ts
-
-export interface VariantCombination {
+// Pricing Types
+export interface PricingItem {
   id: string;
+  variantId: string;
+  valueId: string;
   value: string;
+  image?: string;
   costPrice: number;
   sellingPrice: number;
   taxPercentage: number;
   discount: number;
 }
 
+// Inventory Form Data
 export interface InventoryFormData {
-  // Step 1: Basic Info
+  /* Basic Product Info */
   productName: string;
   sku: string;
   category: string;
   brand: string;
   description: string;
 
-  // Step 2: Variant Details
+  /* Variants & Pricing */
   variants: ProductVariant[];
-  // ADD ONLY THIS
-  pricing: VariantCombination[];
+  pricing: PricingItem[];
 
-  // Step 3: Pricing
-  // costPrice: number;
-  // sellingPrice: number;
-  // taxPercentage: number;
-  // discount: number;
-
-  // Step 4: Shipping
+  /* Shipping Details */
   weight: number;
   length: number;
   width: number;
@@ -43,23 +45,17 @@ export interface InventoryFormData {
   shippingCategory: "light" | "medium" | "heavy";
 }
 
+// Default Form State
 export const defaultFormData: InventoryFormData = {
-  // Step 1
   productName: "",
   sku: "",
   category: "",
   brand: "",
   description: "",
-  // Step 2
-  variants: [],
-  // Step 3
-  pricing: [],
-  // costPrice: 0,
-  // sellingPrice: 0,
-  // taxPercentage: 18,
-  // discount: 0,
 
-  // Step 4
+  variants: [],
+  pricing: [],
+
   weight: 0,
   length: 0,
   width: 0,
@@ -67,6 +63,7 @@ export const defaultFormData: InventoryFormData = {
   shippingCategory: "light",
 };
 
+// Static Options
 export const categories = [
   "Electronics",
   "Clothing & Apparel",

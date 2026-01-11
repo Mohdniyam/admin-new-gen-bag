@@ -7,7 +7,14 @@ import type { InventoryFormData } from "../InventoryFormTypes";
 
 const generateCombinations = (variants: InventoryFormData["variants"]) => {
   const valid = variants.filter((v) => v.values.length);
-  return valid.flatMap((v) => v.values);
+  return valid.flatMap((v) =>
+    v.values.map((val) => ({
+      variantId: v.id,
+      valueId: val.id,
+      value: val.value,
+      image: val.image,
+    }))
+  );
 };
 
 /* ------------------ Component ------------------ */
@@ -26,12 +33,15 @@ const PricingStep = ({ formData, onChange, errors }: PricingStepProps) => {
     const values = generateCombinations(variants);
 
     const updatedPricing = values.map((value) => {
-      const existing = pricing.find((p) => p.value === value);
+      const existing = pricing.find((p) => p.valueId === value.valueId);
 
       return (
         existing || {
           id: crypto.randomUUID(),
-          value, // important
+          valueId: value.valueId,
+          variantId: value.variantId,
+          value: value.value, // string
+          image: value.image,
           costPrice: 0,
           sellingPrice: 0,
           taxPercentage: 0,

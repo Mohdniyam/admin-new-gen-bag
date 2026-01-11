@@ -43,6 +43,7 @@
   --sidebar-accent-foreground: oklch(0.22 0.02 240);
   --sidebar-border: oklch(0.9 0.005 240);
   --sidebar-ring: oklch(0.7 0.01 240);
+  --gradient-primary: linear-gradient(135deg, hsl(221 83% 53%), hsl(262 83% 58%));
 }
 
 .dark {
@@ -83,6 +84,7 @@
   --sidebar-border: oklch(0.25 0.015 240);
   --sidebar-ring: oklch(0.5 0.01 240);
 }
+
 
 @theme inline {
   --font-open: "Open Sans", sans-serif;

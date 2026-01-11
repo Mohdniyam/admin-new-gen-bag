@@ -1,7 +1,8 @@
 import { useLocation, Link } from "react-router-dom";
-import { FiBox, FiClipboard, FiSettings } from "react-icons/fi";
+import { FiBox, FiSettings } from "react-icons/fi";
 import { FaUserCircle, FaUserShield } from "react-icons/fa";
-import { LiaUndoAltSolid } from "react-icons/lia";
+import { PiArrowCounterClockwiseBold } from "react-icons/pi";
+import { MdOutlineInventory } from "react-icons/md";
 
 import type { ComponentType } from "react";
 interface SidebarItem {
@@ -21,19 +22,19 @@ const sidebarItems: SidebarItem[] = [
   {
     label: "Manage Orders",
     path: "/orders",
-    icon: FiClipboard,
+    icon: FiBox,
     isActive: (pathname: string) => pathname.startsWith("/orders"),
   },
   {
     label: "Manage RTO / Returns",
     path: "/returns",
-    icon: LiaUndoAltSolid,
+    icon: PiArrowCounterClockwiseBold,
     isActive: (pathname: string) => pathname.startsWith("/return"),
   },
   {
     label: "Manage Inventory",
     path: "/inventory",
-    icon: FiBox,
+    icon: MdOutlineInventory,
     isActive: (pathname: string) => pathname === "/inventory",
   },
 ];

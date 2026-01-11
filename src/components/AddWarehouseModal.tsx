@@ -41,7 +41,9 @@ export const AddWarehouseModal = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
       <div className="w-full max-w-md rounded-lg bg-white p-6 space-y-4">
-        <h3 className="text-lg font-semibold">Add Warehouse</h3>
+        <h3 className="text-lg font-semibold">
+          {mode === "add" ? "Add Warehouse" : "Edit Warehouse"}
+        </h3>
 
         <input
           value={form.name}
@@ -87,9 +89,9 @@ export const AddWarehouseModal = ({
           </button>
           <button
             onClick={handleSubmit}
-            className="rounded-md bg-black px-4 py-2 text-sm text-white"
+            className="rounded-md px-4 py-2 text-sm text-white bg-black"
           >
-            Save
+            {mode === "add" ? "Save" : "Update"}
           </button>
         </div>
       </div>

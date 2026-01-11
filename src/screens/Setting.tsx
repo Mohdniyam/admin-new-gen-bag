@@ -14,7 +14,7 @@ export interface Warehouse {
 }
 
 const Setting = () => {
-  const [open, setOpen] = useState(false); // 🔑 modal state
+  const [open, setOpen] = useState(false); // modal state
   const [selectedId, setSelectedId] = useState<string>("");
   const [editingWarehouse, setEditingWarehouse] = useState<Warehouse | null>(
     null

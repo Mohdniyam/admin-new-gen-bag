@@ -82,7 +82,7 @@ const WarehouseCard = ({
 
       {/* Default badge */}
       {warehouse.isDefault && (
-        <span className="self-end flex items-center justify-center rounded-full border border-blue-600 px-3 py-1 text-xs font-bold text-blue-600">
+        <span className="self-end flex items-center justify-center rounded-full border border-blue-700 px-3 py-1 text-xs font-bold text-blue-700">
           Default
         </span>
       )}
