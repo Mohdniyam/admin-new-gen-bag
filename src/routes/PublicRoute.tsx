@@ -6,9 +6,22 @@ interface PublicRouteProps {
 }
 
 const PublicRoute = ({ children }: PublicRouteProps) => {
-  const isAuth = !!localStorage.getItem("user");
+  const token = localStorage.getItem("token");
+  const userData = localStorage.getItem("loggedInUser");
 
-  return isAuth ? <Navigate to="/admin" /> : children;
+  if (token && userData) {
+    const user = JSON.parse(userData);
+
+    const roleRoutes: Record<string, string> = {
+      SUPER_ADMIN: "/super-admin",
+      SUPPLIER: "/supplier",
+      CUSTOMER: "/",
+    };
+
+    return <Navigate to={roleRoutes[user.role]} replace />;
+  }
+
+  return <>{children}</>;
 };
 
 export default PublicRoute;

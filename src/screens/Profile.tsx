@@ -43,7 +43,7 @@ const Profile = () => {
               <div className="grow border-t-2 border-gray-200 mx-3" />
             </div>
             {/* Profile Card */}
-            <div className="flex items-center justify-start shadow-md border bg-white rounded-2xl w-full min-h-32 p-4">
+            <div className="flex items-center justify-start shadow-md border bg-white rounded-xl w-full min-h-32 p-4">
               <div className="flex gap-4">
                 <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
                   <Image />

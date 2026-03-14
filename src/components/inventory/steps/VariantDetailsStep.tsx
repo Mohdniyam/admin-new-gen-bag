@@ -3,13 +3,7 @@ import PricingDetails from "./PricingDetails";
 import ShippingDetails from "./ShippingDetails";
 
 import type { InventoryFormData } from "../InventoryFormTypes";
-import {
-  DollarSign,
-  Package,
-  Truck,
-  TruckElectric,
-  TruckIcon,
-} from "lucide-react";
+import { Package } from "lucide-react";
 
 interface Props {
   formData: InventoryFormData;

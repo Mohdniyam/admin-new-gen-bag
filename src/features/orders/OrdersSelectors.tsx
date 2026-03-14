@@ -1,5 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
-import type { RootState } from "@/redux/store";
+import type { RootState } from "@/store/store";
 import { ORDER_STATUS, type OrderStatus } from "./types";
 
 const selectOrders = (state: RootState) => state.orders.orders;
@@ -13,7 +13,7 @@ export const selectFilteredOrders = createSelector(
     }
 
     return orders.filter((order) => order.status === activeStatus);
-  }
+  },
 );
 
 // Order Counts for Tab

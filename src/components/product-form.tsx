@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,8 +19,10 @@ import { useToast } from "@/hooks/use-toast";
 export function ProductForm() {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string>("");
+
+  // ✅ Multiple image support
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -30,64 +32,80 @@ export function ProductForm() {
     category: "",
   });
 
+  // ✅ Handle image change (single + multiple)
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setImageFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
+    const files = e.target.files;
+    if (!files) return;
+
+    const fileArray = Array.from(files);
+
+    // Cleanup old previews
+    imagePreviews.forEach((url) => URL.revokeObjectURL(url));
+
+    setImageFiles(fileArray);
+
+    const previewArray = fileArray.map((file) => URL.createObjectURL(file));
+
+    setImagePreviews(previewArray);
   };
 
+  // ✅ Submit handler
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
       const formDataToSend = new FormData();
+
       formDataToSend.append("name", formData.name);
       formDataToSend.append("description", formData.description);
       formDataToSend.append("price", formData.price);
       formDataToSend.append("stock", formData.stock);
       formDataToSend.append("category", formData.category);
-      if (imageFile) {
-        formDataToSend.append("image", imageFile);
-      }
+
+      // 👇 IMPORTANT — append as "media"
+      imageFiles.forEach((file) => {
+        formDataToSend.append("media", file);
+      });
+
+      const token = localStorage.getItem("token");
 
       const response = await fetch(
-        "https://api.newgeebags.com/api/v1/admin/addProduct",
+        "https://ngtest.newgeebags.com/api/products",
         {
           method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
           body: formDataToSend,
-        }
+        },
       );
 
       const data = await response.json();
 
-      if (response.ok) {
-        toast({
-          title: "Success",
-          description: "Product added successfully!",
-        });
-        // Reset form
-        setFormData({
-          name: "",
-          description: "",
-          price: "",
-          stock: "",
-          category: "",
-        });
-        setImageFile(null);
-        setImagePreview("");
-
-        // Trigger table refresh
-        window.dispatchEvent(new CustomEvent("productAdded"));
-      } else {
+      if (!response.ok) {
         throw new Error(data.message || "Failed to add product");
       }
+
+      toast({
+        title: "Success",
+        description: "Product added successfully!",
+      });
+
+      // ✅ Reset form
+      setFormData({
+        name: "",
+        description: "",
+        price: "",
+        stock: "",
+        category: "",
+      });
+
+      imagePreviews.forEach((url) => URL.revokeObjectURL(url));
+      setImageFiles([]);
+      setImagePreviews([]);
+
+      window.dispatchEvent(new CustomEvent("productAdded"));
     } catch (error) {
       toast({
         title: "Error",
@@ -102,13 +120,9 @@ export function ProductForm() {
 
   const [isProductDetailsOpen, setProductDetailsOpen] = useState(false);
 
-  const handleOnAddProduct = () => {
-    setProductDetailsOpen(!isProductDetailsOpen);
-  };
-
   return (
     <Card className="w-full shadow-md my-8 mx-2 p-0 gap-0">
-      <div className="border-b flex justify-between py-6 ">
+      <div className="border-b flex justify-between py-6">
         <div>
           <h2 className="text-xl font-bold text-foreground mx-6">
             Add New Product
@@ -117,35 +131,35 @@ export function ProductForm() {
             Fill in the details to add a new product to your store
           </p>
         </div>
+
         <div className="flex items-center justify-center mx-4">
           <Button
-            type="submit"
-            className="rounded-xl bg-blue-600 hover:bg-blue-500 cursor-pointer px-6 py-2"
-            onClick={handleOnAddProduct}
+            className="rounded-xl bg-blue-600 hover:bg-blue-500 px-6 py-2"
+            onClick={() => setProductDetailsOpen(!isProductDetailsOpen)}
           >
             {isProductDetailsOpen ? "- Hide Form" : "+ Add Product"}
           </Button>
         </div>
       </div>
+
       <div
         className={`${
-          isProductDetailsOpen ? "max-h-250 pt-4" : "max-h-0"
-        } overflow-hidden transition-all ease-in-out duration-500`}
+          isProductDetailsOpen ? "max-h-300 pt-4" : "max-h-0"
+        } overflow-hidden transition-all duration-500`}
       >
         <CardHeader className="gap-0">
-          <CardTitle className="text-lg font-bold ">Product Details</CardTitle>
-          <CardDescription className="mb-4">
+          <CardTitle className="text-lg font-bold">Product Details</CardTitle>
+          <CardDescription>
             Enter the information for your new product
           </CardDescription>
         </CardHeader>
+
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Product Name</Label>
+            {/* Product Name */}
+            <div>
+              <Label className="pt-2">Product Name</Label>
               <Input
-                id="name"
-                placeholder="Enter product name"
-                className="focus-visible:ring-1 focus-visible:ring-blue-600 focus:border-none"
                 value={formData.name}
                 onChange={(e) =>
                   setFormData({ ...formData, name: e.target.value })
@@ -154,30 +168,25 @@ export function ProductForm() {
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
+            {/* Description */}
+            <div>
+              <Label>Description</Label>
               <Textarea
-                id="description"
-                placeholder="Enter product description"
-                className="focus-visible:ring-1 focus-visible:ring-blue-600 focus:border-none"
+                rows={3}
                 value={formData.description}
                 onChange={(e) =>
                   setFormData({ ...formData, description: e.target.value })
                 }
                 required
-                rows={3}
               />
             </div>
 
+            {/* Price & Stock */}
             <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="price">Price</Label>
+              <div>
+                <Label>Price</Label>
                 <Input
-                  id="price"
                   type="number"
-                  step="0.01"
-                  placeholder="0.00"
-                  className="focus-visible:ring-1 focus-visible:ring-blue-600 focus:border-none"
                   value={formData.price}
                   onChange={(e) =>
                     setFormData({ ...formData, price: e.target.value })
@@ -186,13 +195,10 @@ export function ProductForm() {
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="stock">Stock Quantity</Label>
+              <div>
+                <Label>Stock</Label>
                 <Input
-                  id="stock"
                   type="number"
-                  placeholder="0"
-                  className="focus-visible:ring-1 focus-visible:ring-blue-600 focus:border-none"
                   value={formData.stock}
                   onChange={(e) =>
                     setFormData({ ...formData, stock: e.target.value })
@@ -202,14 +208,10 @@ export function ProductForm() {
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="category" className="">
-                Category
-              </Label>
+            {/* Category */}
+            <div>
+              <Label>Category</Label>
               <Input
-                id="category"
-                placeholder="e.g., photo, laptop, travel"
-                className="focus-visible:ring-1 focus-visible:ring-blue-600 focus:border-none"
                 value={formData.category}
                 onChange={(e) =>
                   setFormData({ ...formData, category: e.target.value })
@@ -218,40 +220,46 @@ export function ProductForm() {
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="image">Product Image</Label>
-              <div className="flex items-center gap-4">
-                <div className="flex-1">
-                  <Input
-                    id="image"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="cursor-pointer"
-                  />
+            {/* Image Upload */}
+            <div>
+              <Label>Product Images</Label>
+              <Input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleImageChange}
+              />
+
+              {/* Preview */}
+              {imagePreviews.length > 0 && (
+                <div className="flex gap-3 flex-wrap mt-3">
+                  {imagePreviews.map((src, index) => (
+                    <div
+                      key={index}
+                      className="h-20 w-20 rounded-lg border overflow-hidden"
+                    >
+                      <img
+                        src={src}
+                        className="h-full w-full object-cover"
+                        alt="Preview"
+                      />
+                    </div>
+                  ))}
                 </div>
-                {imagePreview && (
-                  <div className="h-16 w-16 rounded-lg border border-border overflow-hidden">
-                    <img
-                      src={imagePreview || "/placeholder.svg"}
-                      alt="Preview"
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                )}
-              </div>
+              )}
             </div>
 
-            <div className="flex justify-end mx-4 my-12">
+            {/* Submit */}
+            <div className="flex justify-end pt-6">
               <Button
                 type="submit"
-                className="w-1/5 h-12 bg-blue-600 rounded-xl hover:bg-blue-700 cursor-pointer"
                 disabled={loading}
+                className="bg-blue-600 hover:bg-blue-700"
               >
                 {loading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Adding Product...
+                    Adding...
                   </>
                 ) : (
                   <>

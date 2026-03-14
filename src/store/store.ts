@@ -1,11 +1,13 @@
 import ordersManagementReducer from "@/features/orders/ordersManagementSlice";
 import returnManagementReducer from "@/features/rto/return/returnManagementSlice";
+import supplierReducer from "@/features/supplier/supplierSlice";
 import { configureStore } from "@reduxjs/toolkit";
 
 export const store = configureStore({
   reducer: {
     orders: ordersManagementReducer,
     return: returnManagementReducer,
+    suppliers: supplierReducer,
   },
 });
 
